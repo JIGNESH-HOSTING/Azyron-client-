@@ -26,7 +26,7 @@ MODS = {
     "entityculling": "Entity Culling — skips hidden entities",
     "moreculling": "More Culling — extra culling heuristics",
     "cloth-config": "Cloth Config API — required by More Culling",
-    "modernfix": "ModernFix — general fixes & optimizations",
+    "modernfix-mvus": "ModernFix (mVUS fork, 1.21.11-tagged) — general fixes & optimizations",
     "dynamic-fps": "Dynamic FPS — lowers FPS when idle",
     "modmenu": "Mod Menu — in-game mods list",
 }
