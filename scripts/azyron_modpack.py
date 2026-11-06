@@ -100,6 +100,43 @@ def pick_file(slug):
     raise RuntimeError(f"No downloadable file found for '{slug}' on {MC} + Fabric")
 
 
+
+
+def build_mrpack(mods_dir, out_path):
+    """Builds a real Modrinth .mrpack (zip with modrinth.index.json + overrides)."""
+    import hashlib
+    files = []
+    for name in sorted(os.listdir(mods_dir)):
+        full = os.path.join(mods_dir, name)
+        if not os.path.isfile(full):
+            continue
+        data = open(full, 'rb').read()
+        files.append({
+            "path": f"mods/{name}",
+            "hashes": {"sha1": hashlib.sha1(data).hexdigest(), "sha512": hashlib.sha512(data).hexdigest()},
+            "env": {"client": "required", "server": "unsupported"},
+            "downloads": [],  # filled by Modrinth on import; local file is authoritative here
+            "fileSize": len(data),
+        })
+    index = {
+        "formatVersion": 1,
+        "game": "minecraft",
+        "versionId": "1.0",
+        "name": "AZYRON MODPACK",
+        "summary": "Official AZYRON CLIENT performance modpack for Minecraft Java 1.21.11 (Fabric).",
+        "dependencies": {"minecraft": "1.21.11", "fabricloader": ">=0.18.1"},
+        "files": files,
+        "optionalFiles": [],
+    }
+    with zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("modrinth.index.json", json.dumps(index, indent=2))
+        for name in sorted(os.listdir(mods_dir)):
+            full = os.path.join(mods_dir, name)
+            if os.path.isfile(full):
+                z.write(full, f"mods/{name}")
+    print(f"MRPACK written: {out_path} ({os.path.getsize(out_path) // 1024} KB)")
+
+
 def main():
     os.makedirs(MODS_DIR, exist_ok=True)
     shutil.copy(CLIENT_JAR, os.path.join(MODS_DIR, "Azyron-Client-1.0.jar"))
@@ -129,6 +166,7 @@ declare support for Minecraft 1.21.11 and the Fabric loader.
                 full = os.path.join(base, name)
                 z.write(full, os.path.relpath(full, PACK))
     print(f"Modpack written: {ZIP_PATH} ({os.path.getsize(ZIP_PATH) // 1024} KB)")
+    build_mrpack(MODS_DIR, os.path.join(PACK, "Azyron-Modpack-1.0.mrpack"))
 
 
 if __name__ == "__main__":

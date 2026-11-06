@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AZYRON ADMIN — Owner Only</title>
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+
+<div class="login-wrap" id="loginWrap">
+  <h1>AZYRON ADMIN</h1>
+  <p>Owner-only access. Sign in with the developer password.</p>
+  <form id="loginForm">
+    <input class="admin-input" type="password" id="pw" placeholder="Password" autocomplete="current-password" required>
+    <button class="admin-btn" type="submit">SIGN IN</button>
+    <p class="warn" id="loginError" style="margin-top:12px"></p>
+  </form>
+</div>
+
+<div class="dash" id="dash" style="display:none">
+  <h1>AZYRON ADMIN DASHBOARD</h1>
+  <p class="sub">Signed in as owner (JIGNESH GAMING). Changes are saved to the <strong>draft</strong> — the public site only changes after you press PUBLISH. Current public release status: <strong id="pubStatus"></strong> · last published: <span id="pubAt">never</span></p>
+  <div class="dash-tabs" id="dashTabs">
+    <button class="dash-tab active" data-panel="p-status">Release Status</button>
+    <button class="dash-tab" data-panel="p-client">Client Download</button>
+    <button class="dash-tab" data-panel="p-modpack">Modpack Download</button>
+    <button class="dash-tab" data-panel="p-shots">Screenshots</button>
+    <button class="dash-tab" data-panel="p-ann">Announcements</button>
+    <button class="dash-tab" data-panel="p-content">Site Content</button>
+    <button class="dash-tab" data-panel="p-publish">Preview &amp; Publish</button>
+  </div>
+
+  <div class="panel active" id="p-status">
+    <h2>Release Status</h2>
+    <p class="note">Stages: Development → Pre-Release → RC → Official Release. Only you can advance a stage.</p>
+    <div class="row">
+      <select id="releaseStatus">
+        <option value="development">Development</option>
+        <option value="pre-release">Pre-Release</option>
+        <option value="rc">RC</option>
+        <option value="official">Official Release</option>
+      </select>
+      <button class="admin-btn" onclick="saveStatus()">SAVE STATUS</button>
+    </div>
+  </div>
+
+  <div class="panel" id="p-client"></div>
+  <div class="panel" id="p-modpack"></div>
+
+  <div class="panel" id="p-shots">
+    <h2>Screenshots</h2>
+    <p class="note">Upload images shown in the public Screenshots section.</p>
+    <div class="row">
+      <input type="file" id="shotFiles" accept="image/*" multiple style="color:var(--muted)">
+      <button class="admin-btn" onclick="uploadShots()">UPLOAD</button>
+    </div>
+    <div id="shotsList" class="row" style="margin-top:16px"></div>
+  </div>
+
+  <div class="panel" id="p-ann">
+    <h2>Announcements</h2>
+    <div class="row">
+      <input class="admin-input" id="annText" placeholder="Announcement text">
+      <input class="admin-input" id="annDate" placeholder="Date (YYYY-MM-DD)" style="max-width:160px">
+      <button class="admin-btn" onclick="addAnn()">ADD</button>
+    </div>
+    <div id="annList" style="margin-top:16px"></div>
+  </div>
+
+  <div class="panel" id="p-content">
+    <h2>Site Content (features / FAQ / install steps / social links)</h2>
+    <p class="note">Edit JSON arrays directly. They are validated server-side.</p>
+    <textarea id="contentJson" class="admin-input" style="min-height:260px;font-family:monospace"></textarea>
+    <button class="admin-btn" onclick="saveContent()">SAVE CONTENT</button>
+    <p class="note" id="contentMsg" style="margin-top:10px"></p>
+  </div>
+
+  <div class="panel" id="p-publish">
+    <h2>Preview &amp; Publish</h2>
+    <p class="note">The public site (<a href="/" target="_blank" style="color:var(--blue)">/</a>) shows the <strong>published</strong> version. Use <a href="/api/site" target="_blank" style="color:var(--blue)">/api/site</a> to inspect it. To review your draft before publishing, open <a href="/api/admin/draft" target="_blank" style="color:var(--blue)">/api/admin/draft</a>.</p>
+    <button class="admin-btn" onclick="publish()">🚀 PUBLISH DRAFT TO PUBLIC SITE</button>
+    <p class="ok" id="pubMsg" style="margin-top:10px"></p>
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <button class="admin-btn danger" onclick="logout()">SIGN OUT</button>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

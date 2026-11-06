@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AZYRON CLIENT — Official Website</title>
+<meta name="description" content="AZYRON CLIENT — premium high-performance Minecraft Java 1.21.11 client. Performance. Smoothness. Style.">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="brand">
+      <img src="/assets/icon.svg" alt="AZYRON" class="brand-icon">
+      <span>AZYRON <em>CLIENT</em></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#screenshots">Screenshots</a>
+      <a href="#download">Download</a>
+      <a href="#changelog">Changelog</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+      <a href="#support">Support</a>
+      <span class="release-badge" id="releaseBadge">DEVELOPMENT</span>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <img src="/assets/icon.svg" alt="AZYRON CLIENT logo" class="hero-logo reveal">
+    <h1 class="reveal">BOOST YOUR MINECRAFT EXPERIENCE</h1>
+    <p class="subtitle reveal">Performance. Smoothness. Style.</p>
+    <div class="badges reveal">
+      <span class="badge">Minecraft Java 1.21.11</span>
+      <span class="badge badge-alt">Fabric Loader</span>
+      <span class="badge badge-alt" id="heroVersion">Client v1.0</span>
+    </div>
+    <div class="hero-cta reveal">
+      <a href="#download" class="btn btn-primary">⬇ DOWNLOAD</a>
+      <a href="#features" class="btn btn-ghost">EXPLORE FEATURES</a>
+    </div>
+  </div>
+  <div class="scroll-hint">▼</div>
+</header>
+
+<section class="section" id="preview">
+  <div class="container">
+    <h2 class="section-title reveal">CLIENT PREVIEW</h2>
+    <p class="section-sub reveal">A premium dark interface with purple &amp; electric-blue accents.</p>
+    <div class="preview-grid" id="previewGrid"></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="features">
+  <div class="container">
+    <h2 class="section-title reveal">FEATURES</h2>
+    <p class="section-sub reveal">Built for maximum FPS, smooth gameplay and stability on Minecraft 1.21.11.</p>
+    <div class="features-grid" id="featuresGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="screenshots">
+  <div class="container">
+    <h2 class="section-title reveal">SCREENSHOTS</h2>
+    <div class="shots-grid" id="shotsGrid"></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="download">
+  <div class="container">
+    <h2 class="section-title reveal">DOWNLOAD</h2>
+    <p class="section-sub reveal">Two separate downloads. A button only appears when the owner has approved the file.</p>
+    <div class="download-grid">
+      <div class="dl-card reveal" id="card-client"></div>
+      <div class="dl-card reveal" id="card-modpack"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="changelog">
+  <div class="container">
+    <h2 class="section-title reveal">CHANGELOG</h2>
+    <div class="changelog-tabs reveal">
+      <button class="tab active" data-tab="client">AZYRON CLIENT</button>
+      <button class="tab" data-tab="modpack">AZYRON MODPACK</button>
+    </div>
+    <div class="changelog-list reveal" id="changelogList"></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="install">
+  <div class="container">
+    <h2 class="section-title reveal">INSTALLATION GUIDE</h2>
+    <div class="steps" id="installSteps"></div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="section-title reveal">FAQ</h2>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="support">
+  <div class="container">
+    <h2 class="section-title reveal">SUPPORT</h2>
+    <p class="section-sub reveal">Announcements from the developer:</p>
+    <div class="announcements" id="announcements"></div>
+    <div class="support-cards">
+      <a class="support-card" id="linkDiscord" href="#" target="_blank" rel="noopener">
+        <span class="sc-icon">💬</span><span class="sc-title">Discord</span><span class="sc-sub">Join the community</span>
+      </a>
+      <a class="support-card" id="linkGithub" href="#" target="_blank" rel="noopener">
+        <span class="sc-icon">🐙</span><span class="sc-title">GitHub</span><span class="sc-sub">Source &amp; issues</span>
+      </a>
+      <a class="support-card" id="linkTwitter" href="#" target="_blank" rel="noopener">
+        <span class="sc-icon">🐦</span><span class="sc-title">Twitter / X</span><span class="sc-sub">News &amp; updates</span>
+      </a>
+      <a class="support-card" id="linkYoutube" href="#" target="_blank" rel="noopener">
+        <span class="sc-icon">▶</span><span class="sc-title">YouTube</span><span class="sc-sub">Tutorials</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="/assets/icon.svg" alt="AZYRON" class="brand-icon">
+      <div>
+        <strong>AZYRON CLIENT</strong>
+        <p>Minecraft Java 1.21.11 • Fabric</p>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 JIGNESH GAMING — AZYRON CLIENT. All rights reserved.<br>Minecraft is a trademark of Mojang Studios. AZYRON CLIENT is not affiliated with Mojang.</p>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

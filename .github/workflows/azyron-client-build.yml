@@ -85,6 +85,7 @@ jobs:
         run: |
           cp azyron-client/build/libs/azyron-client-1.0.jar Azyron-Client-1.0.jar
           cp azyron-client/modpack/Azyron-Client-Modpack-1.0.zip .
+          cp azyron-client/modpack/Azyron-Modpack-1.0.mrpack Azyron-Modpack-1.0.mrpack
           ls -la Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip
 
       - name: Update PRIVATE draft release (never public without developer approval)
@@ -96,9 +97,9 @@ jobs:
           DRAFT ONLY — not for public distribution. Release control: JIGNESH GAMING.'
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release edit "$TAG" --draft --title "AZYRON CLIENT 1.0 (PRIVATE DRAFT) — Minecraft 1.21.11" --notes "$NOTES"
-            gh release upload "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --clobber
+            gh release upload "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip Azyron-Modpack-1.0.mrpack --clobber
           else
-            gh release create "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --draft --title "AZYRON CLIENT 1.0 (PRIVATE DRAFT) — Minecraft 1.21.11" --notes "$NOTES"
+            gh release create "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip Azyron-Modpack-1.0.mrpack --draft --title "AZYRON CLIENT 1.0 (PRIVATE DRAFT) — Minecraft 1.21.11" --notes "$NOTES"
           fi
           gh release view "$TAG" --json isDraft --jq '.isDraft'
 
