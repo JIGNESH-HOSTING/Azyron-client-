@@ -55,12 +55,16 @@ CONTENTS:
 """
 
 
-def fetch_versions(slug):
+FALLBACK_GAME_VERSIONS = ("1.21.11", "1.21.10", "1.21.9", "1.21.8")
+
+
+def fetch_versions(slug, game_versions=None):
+    gv = urllib.request.quote(json.dumps(game_versions)) if game_versions else ""
     url = (
         f"https://api.modrinth.com/v2/project/{slug}/version"
-        f"?loaders={urllib.request.quote(LOADERS)}&game_versions={urllib.request.quote(GAME_VERSIONS)}"
+        f"?loaders={urllib.request.quote(LOADERS)}&game_versions={gv}"
     )
-    print(f"Querying Modrinth for '{slug}' ...")
+    print(f"Querying Modrinth for '{slug}' (game_versions={game_versions}) ...")
     try:
         with urllib.request.urlopen(url, timeout=30) as r:
             return json.load(r)
@@ -73,12 +77,17 @@ def fetch_versions(slug):
             for hit in hits:
                 if slug.replace("-", "") in hit["slug"].replace("-", "") or slug.replace("-", "") in hit["project_id"]:
                     print(f"Retrying with slug '{hit['slug']}'")
-                    return fetch_versions(hit["slug"])
+                    return fetch_versions(hit["slug"], game_versions)
         raise
 
 
 def pick_file(slug):
-    versions = fetch_versions(slug)
+    versions = fetch_versions(slug, [MC])
+    if not versions:
+        # Some mods (e.g. ModernFix) tag nearby 1.21.x versions instead of the exact one.
+        all_fabric = fetch_versions(slug)
+        versions = [v for v in all_fabric
+                    if any(g in FALLBACK_GAME_VERSIONS for g in v.get("game_versions", []))]
     if not versions:
         raise RuntimeError(f"No Modrinth version of '{slug}' supports {MC} + Fabric")
     releases = [v for v in versions if v.get("version_type") == "release"]
