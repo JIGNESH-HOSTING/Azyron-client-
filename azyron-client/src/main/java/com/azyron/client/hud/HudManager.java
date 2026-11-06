@@ -114,11 +114,19 @@ public final class HudManager {
         drawKey(context, tr(mc), x + (size + gap) * 2, y + size + gap, size, "D", mc.options.rightKey.isPressed());
     }
 
+    /** DrawContext.drawBorder was removed in 1.21.9+, so draw the outline with four fills. */
+    public static void drawBorder(DrawContext context, int x, int y, int w, int h, int color) {
+        context.fill(x, y, x + w, y + 1, color);
+        context.fill(x, y + h - 1, x + w, y + h, color);
+        context.fill(x, y, x + 1, y + h, color);
+        context.fill(x + w - 1, y, x + w, y + h, color);
+    }
+
     private static void drawKey(DrawContext context, TextRenderer tr, int x, int y, int size, String label, boolean pressed) {
         int bg = pressed ? 0xCCAA66FF : COLOR_BG;
         int border = pressed ? COLOR_TEXT : COLOR_ACCENT;
         context.fill(x, y, x + size, y + size, bg);
-        context.drawBorder(x, y, size, size, border);
+        drawBorder(context, x, y, size, size, border);
         int tx = x + (size - tr.getWidth(label)) / 2;
         int ty = y + (size - tr.fontHeight) / 2 + 1;
         context.drawText(tr, label, tx, ty, pressed ? 0xFF1B1030 : COLOR_TEXT, false);

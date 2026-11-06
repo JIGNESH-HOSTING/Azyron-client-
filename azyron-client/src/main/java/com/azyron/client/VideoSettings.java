@@ -17,46 +17,46 @@ public final class VideoSettings {
         GameOptions o = mc.options;
         switch (profile) {
             case POTATO -> {
-                o.graphicsMode.setValue(GraphicsMode.FAST);
-                o.renderDistance.setValue(2);
-                o.simulationDistance.setValue(2);
-                o.cloudRenderMode.setValue(CloudRenderMode.OFF);
-                o.particles.setValue(ParticlesMode.MINIMAL);
-                o.smoothLighting.setValue(false);
-                o.entityDistanceScaling.setValue(0.5);
-                o.mipmapLevels.setValue(0);
-                o.useVsync.setValue(false);
-                o.framerateLimit.setValue(60);
-                o.biomeBlendRadius.setValue(0);
-                o.entityShadows.setValue(false);
+                o.getGraphicsMode().setValue(GraphicsMode.FAST);
+                o.getViewDistance().setValue(2);
+                o.getSimulationDistance().setValue(2);
+                o.getCloudRenderMode().setValue(CloudRenderMode.OFF);
+                o.getParticles().setValue(ParticlesMode.MINIMAL);
+                o.getAo().setValue(false);
+                o.getEntityDistanceScaling().setValue(0.5);
+                o.getMipmapLevels().setValue(0);
+                o.getEnableVsync().setValue(false);
+                o.getMaxFps().setValue(60);
+                o.getBiomeBlendRadius().setValue(0);
+                o.getEntityShadows().setValue(false);
             }
             case BALANCED -> {
-                o.graphicsMode.setValue(GraphicsMode.FAST);
-                o.renderDistance.setValue(6);
-                o.simulationDistance.setValue(6);
-                o.cloudRenderMode.setValue(CloudRenderMode.OFF);
-                o.particles.setValue(ParticlesMode.MINIMAL);
-                o.smoothLighting.setValue(false);
-                o.entityDistanceScaling.setValue(0.75);
-                o.mipmapLevels.setValue(2);
-                o.useVsync.setValue(false);
-                o.framerateLimit.setValue(120);
-                o.biomeBlendRadius.setValue(1);
-                o.entityShadows.setValue(false);
+                o.getGraphicsMode().setValue(GraphicsMode.FAST);
+                o.getViewDistance().setValue(6);
+                o.getSimulationDistance().setValue(6);
+                o.getCloudRenderMode().setValue(CloudRenderMode.OFF);
+                o.getParticles().setValue(ParticlesMode.MINIMAL);
+                o.getAo().setValue(false);
+                o.getEntityDistanceScaling().setValue(0.75);
+                o.getMipmapLevels().setValue(2);
+                o.getEnableVsync().setValue(false);
+                o.getMaxFps().setValue(120);
+                o.getBiomeBlendRadius().setValue(1);
+                o.getEntityShadows().setValue(false);
             }
             case SMOOTH -> {
-                o.graphicsMode.setValue(GraphicsMode.FAST);
-                o.renderDistance.setValue(10);
-                o.simulationDistance.setValue(10);
-                o.cloudRenderMode.setValue(CloudRenderMode.FAST);
-                o.particles.setValue(ParticlesMode.ALL);
-                o.smoothLighting.setValue(true);
-                o.entityDistanceScaling.setValue(1.0);
-                o.mipmapLevels.setValue(4);
-                o.useVsync.setValue(false);
-                o.framerateLimit.setValue(144);
-                o.biomeBlendRadius.setValue(2);
-                o.entityShadows.setValue(true);
+                o.getGraphicsMode().setValue(GraphicsMode.FAST);
+                o.getViewDistance().setValue(10);
+                o.getSimulationDistance().setValue(10);
+                o.getCloudRenderMode().setValue(CloudRenderMode.FAST);
+                o.getParticles().setValue(ParticlesMode.ALL);
+                o.getAo().setValue(true);
+                o.getEntityDistanceScaling().setValue(1.0);
+                o.getMipmapLevels().setValue(4);
+                o.getEnableVsync().setValue(false);
+                o.getMaxFps().setValue(144);
+                o.getBiomeBlendRadius().setValue(2);
+                o.getEntityShadows().setValue(true);
             }
         }
         AzyronConfig.get().profile = profile;

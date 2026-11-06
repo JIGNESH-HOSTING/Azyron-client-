@@ -32,8 +32,8 @@ public abstract class TitleScreenMixin extends Screen {
         int logoY = this.height / 4 - 24;
 
         context.getMatrices().push();
-        context.getMatrices().translate(cx, logoY, 0);
-        context.getMatrices().scale(4.0F, 4.0F, 1.0F);
+        context.getMatrices().translate(cx, logoY);
+        context.getMatrices().scale(4.0F, 4.0F);
         context.drawText(this.textRenderer, AzyronClient.NAME, -this.textRenderer.getWidth(AzyronClient.NAME) / 2, 0, 0xFFAA66FF, true);
         context.getMatrices().pop();
 

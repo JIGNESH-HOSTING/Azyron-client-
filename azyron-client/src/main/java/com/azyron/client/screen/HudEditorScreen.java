@@ -68,39 +68,39 @@ public class HudEditorScreen extends AzyronScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
+    public boolean mouseClicked(net.minecraft.client.gui.Click click, boolean doubled) {
+        if (click.button() == 0) {
             for (Map.Entry<String, int[]> e : bounds.entrySet()) {
                 int[] b = e.getValue();
-                if (mouseX >= b[0] && mouseX <= b[0] + b[2] && mouseY >= b[1] && mouseY <= b[1] + b[3]) {
+                if (click.x() >= b[0] && click.x() <= b[0] + b[2] && click.y() >= b[1] && click.y() <= b[1] + b[3]) {
                     dragging = e.getKey();
                     return true;
                 }
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        if (dragging != null && button == 0) {
+    public boolean mouseDragged(net.minecraft.client.gui.Click click, double offsetX, double offsetY) {
+        if (dragging != null && click.button() == 0) {
             int[] b = bounds.get(dragging);
             if (b != null) {
-                HudManager.setPosition(dragging, (int) mouseX - b[2] / 2, (int) mouseY - b[3] / 2);
+                HudManager.setPosition(dragging, (int) click.x() - b[2] / 2, (int) click.y() - b[3] / 2);
                 return true;
             }
         }
-        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+        return super.mouseDragged(click, offsetX, offsetY);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(net.minecraft.client.gui.Click click) {
         if (dragging != null) {
             dragging = null;
             AzyronConfig.save();
             return true;
         }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(click);
     }
 
     @Override
