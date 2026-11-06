@@ -5,7 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.GraphicsMode;
-import net.minecraft.client.option.ParticlesMode;
+import net.minecraft.particle.ParticlesMode;
 
 public final class VideoSettings {
 
@@ -17,7 +17,7 @@ public final class VideoSettings {
         GameOptions o = mc.options;
         switch (profile) {
             case POTATO -> {
-                o.getGraphicsMode().setValue(GraphicsMode.FAST);
+                o.getPreset().setValue(GraphicsMode.FAST);
                 o.getViewDistance().setValue(2);
                 o.getSimulationDistance().setValue(2);
                 o.getCloudRenderMode().setValue(CloudRenderMode.OFF);
@@ -31,7 +31,7 @@ public final class VideoSettings {
                 o.getEntityShadows().setValue(false);
             }
             case BALANCED -> {
-                o.getGraphicsMode().setValue(GraphicsMode.FAST);
+                o.getPreset().setValue(GraphicsMode.FAST);
                 o.getViewDistance().setValue(6);
                 o.getSimulationDistance().setValue(6);
                 o.getCloudRenderMode().setValue(CloudRenderMode.OFF);
@@ -45,7 +45,7 @@ public final class VideoSettings {
                 o.getEntityShadows().setValue(false);
             }
             case SMOOTH -> {
-                o.getGraphicsMode().setValue(GraphicsMode.FAST);
+                o.getPreset().setValue(GraphicsMode.FAST);
                 o.getViewDistance().setValue(10);
                 o.getSimulationDistance().setValue(10);
                 o.getCloudRenderMode().setValue(CloudRenderMode.FAST);

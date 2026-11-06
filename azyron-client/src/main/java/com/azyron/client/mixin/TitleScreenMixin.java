@@ -29,14 +29,9 @@ public abstract class TitleScreenMixin extends Screen {
     @Inject(method = "render", at = @At("TAIL"))
     private void azyron$branding(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         int cx = this.width / 2;
-        int logoY = this.height / 4 - 24;
+        int logoY = this.height / 4 - 12;
 
-        context.getMatrices().push();
-        context.getMatrices().translate(cx, logoY);
-        context.getMatrices().scale(4.0F, 4.0F);
-        context.drawText(this.textRenderer, AzyronClient.NAME, -this.textRenderer.getWidth(AzyronClient.NAME) / 2, 0, 0xFFAA66FF, true);
-        context.getMatrices().pop();
-
+        context.drawCenteredTextWithShadow(this.textRenderer, AzyronClient.NAME, cx, logoY, 0xFFAA66FF);
         context.drawCenteredTextWithShadow(this.textRenderer,
                 "CLIENT " + AzyronClient.VERSION + "  —  by " + AzyronClient.DEVELOPER, cx, logoY + 42, 0xFF33CCFF);
         context.drawCenteredTextWithShadow(this.textRenderer,

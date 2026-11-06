@@ -49,7 +49,7 @@ public class HudEditorScreen extends AzyronScreen {
             bounds.put(key, new int[]{pos[0], pos[1], w, h});
             int color = key.equals(dragging) ? 0xFF33CCFF : (enabled ? ACCENT : 0xFF555566);
             context.fill(pos[0], pos[1], pos[0] + w, pos[1] + h, enabled ? 0x80000000 : 0x40000000);
-            context.drawBorder(pos[0], pos[1], w, h, color);
+            HudManager.drawBorder(context, pos[0], pos[1], w, h, color);
             context.drawText(this.textRenderer, module.getValue() + (enabled ? "" : " (off)"),
                     pos[0] + 4, pos[1] + 3, enabled ? 0xFFFFFFFF : 0xFF999999, false);
         }

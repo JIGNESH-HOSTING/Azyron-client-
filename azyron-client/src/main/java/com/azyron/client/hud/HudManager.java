@@ -85,7 +85,7 @@ public final class HudManager {
         if (mc.getNetworkHandler() != null && mc.player != null) {
             PlayerListEntry entry = mc.getNetworkHandler().getPlayerListEntry(mc.player.getUuid());
             if (entry != null) {
-                return String.valueOf(entry.latency);
+                return String.valueOf(entry.getLatency());
             }
         }
         return "-";
@@ -135,8 +135,9 @@ public final class HudManager {
     private static void drawArmor(DrawContext context, MinecraftClient mc, int sw, int sh) {
         int slotW = 18;
         int[] pos = resolve("armor", slotW * 4, 16, sw, sh);
-        for (int i = 0; i < 4; i++) {
-            ItemStack stack = mc.player.getInventory().armor.get(3 - i);
+        EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+        for (int i = 0; i < slots.length; i++) {
+            ItemStack stack = mc.player.getEquippedStack(slots[i]);
             if (!stack.isEmpty()) {
                 context.drawItem(stack, pos[0] + i * slotW, pos[1]);
             }
