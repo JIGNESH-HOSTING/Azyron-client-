@@ -9,6 +9,7 @@ import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.entity.EquipmentSlot;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

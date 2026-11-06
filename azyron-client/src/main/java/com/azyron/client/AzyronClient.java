@@ -29,7 +29,7 @@ public class AzyronClient implements ClientModInitializer {
                 "key.azyron.open_menu",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_RIGHT_SHIFT,
-                "category.azyron.client"
+                KeyBinding.Category.create(Identifier.of("azyron-client", "client"))
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
