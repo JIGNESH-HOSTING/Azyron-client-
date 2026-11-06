@@ -46,6 +46,25 @@ jobs:
           path: /tmp/gradle-build.log
           retention-days: 7
 
+      - name: Report build errors as commit comment (on failure)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request
+          log = open('/tmp/gradle-build.log').read()
+          lines = [l for l in log.splitlines() if any(k in l.lower() for k in ('error', 'failure', 'caused by', 'went wrong', 'exception'))]
+          excerpt = '\n'.join(lines[-60:]) or log[-4000:]
+          body = '**AZYRON build failed — error excerpt:**\n```\n' + excerpt + '\n```'
+          sha = os.environ['GITHUB_SHA']
+          req = urllib.request.Request(
+              f'https://api.github.com/repos/{os.environ["GITHUB_REPOSITORY"]}/commits/{sha}/comments',
+              data=json.dumps({'body': body}).encode(),
+              headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+          urllib.request.urlopen(req)
+          EOF
+
       - name: Validate built JAR contains mod metadata
         working-directory: azyron-client
         run: |
