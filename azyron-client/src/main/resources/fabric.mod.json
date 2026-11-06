@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "azyron-client",
+  "version": "${version}",
+  "name": "AZYRON CLIENT",
+  "description": "AZYRON CLIENT 1.0 — a beautiful, lightweight, high-performance Minecraft Java client for 1.21.11. Custom main menu, HUD, FPS boost profiles and one-click optimization.",
+  "authors": [
+    "JIGNESH GAMING"
+  ],
+  "contact": {
+    "homepage": "https://github.com/JIGNESH-HOSTING/Azyron-client-"
+  },
+  "license": "MIT",
+  "icon": "assets/azyron-client/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.azyron.client.AzyronClient"
+    ]
+  },
+  "mixins": [
+    "azyron-client.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

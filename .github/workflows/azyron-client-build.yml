@@ -1,0 +1,77 @@
+name: Build AZYRON CLIENT (MC 1.21.11)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - arena/6c14ec81-azyron-client
+    paths:
+      - 'azyron-client/**'
+      - '.github/workflows/azyron-client-build.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Compile mod + modpack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Verify Minecraft 1.21.11 exists in Mojang manifest
+        run: |
+          curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json \
+            | python3 -c "import sys,json; m=json.load(sys.stdin); vs=[v['id'] for v in m['versions']]; assert '1.21.11' in vs, '1.21.11 missing'; print('Minecraft 1.21.11 confirmed in Mojang manifest')"
+
+      - name: Build AZYRON CLIENT mod JAR with Fabric Loom
+        working-directory: azyron-client
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon clean build
+
+      - name: Validate built JAR contains mod metadata
+        working-directory: azyron-client
+        run: |
+          JAR=build/libs/azyron-client-1.0.jar
+          test -f "$JAR"
+          unzip -p "$JAR" fabric.mod.json | grep -q '"azyron-client"'
+          unzip -p "$JAR" azyron-client.mixins.json | grep -q 'TitleScreenMixin'
+          unzip -l "$JAR" | grep -q 'com/azyron/client/AzyronClient.class'
+          echo "JAR validated: $(du -h "$JAR" | cut -f1)"
+
+      - name: Assemble installation-ready modpack ZIP
+        working-directory: azyron-client
+        run: |
+          python3 ../scripts/azyron_modpack.py
+
+      - name: Stage release artifacts
+        run: |
+          cp azyron-client/build/libs/azyron-client-1.0.jar Azyron-Client-1.0.jar
+          cp azyron-client/modpack/Azyron-Client-Modpack-1.0.zip .
+          ls -la Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip
+
+      - name: Publish GitHub release with downloadable files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=azyron-client-1.0
+          NOTES='AZYRON CLIENT 1.0 for Minecraft Java 1.21.11 (Fabric).
+
+          • Azyron-Client-1.0.jar — drop into the mods folder of a Fabric 1.21.11 instance.
+          • Azyron-Client-Modpack-1.0.zip — installation-ready modpack with AZYRON CLIENT + Sodium, Lithium, FerriteCore, ImmediatelyFast, Entity Culling, More Culling, ModernFix, Dynamic FPS and Fabric API, all verified for 1.21.11.
+
+          Developer: JIGNESH GAMING. PojavLauncher compatible.'
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --clobber
+          else
+            gh release create "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --title "AZYRON CLIENT 1.0 — Minecraft 1.21.11" --notes "$NOTES"
+          fi
+          gh release view "$TAG" --json assets --jq '.assets[].name'

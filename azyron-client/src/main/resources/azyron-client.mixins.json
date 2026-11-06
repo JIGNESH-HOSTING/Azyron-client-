@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.azyron.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MouseMixin",
+    "SplashOverlayMixin",
+    "TitleScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
