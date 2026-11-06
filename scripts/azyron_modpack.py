@@ -68,10 +68,13 @@ def pick_file(slug):
     if not versions:
         raise RuntimeError(f"No Modrinth version of '{slug}' supports {MC} + Fabric")
     releases = [v for v in versions if v.get("version_type") == "release"]
-    version = (releases or versions)[0]
-    files = [f for f in version["files"] if f.get("primary")] or version["files"]
-    file = files[0]
-    return version["version_number"], file["url"], file["filename"]
+    candidates = releases or versions
+    for version in candidates:
+        files = [f for f in version.get("files", []) if f.get("primary")] or version.get("files", [])
+        if files:
+            file = files[0]
+            return version["version_number"], file["url"], file["filename"]
+    raise RuntimeError(f"No downloadable file found for '{slug}' on {MC} + Fabric")
 
 
 def main():

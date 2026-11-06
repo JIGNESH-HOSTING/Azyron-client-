@@ -78,7 +78,8 @@ jobs:
       - name: Assemble installation-ready modpack ZIP
         working-directory: azyron-client
         run: |
-          python3 ../scripts/azyron_modpack.py
+          python3 ../scripts/azyron_modpack.py 2>&1 | tee /tmp/modpack.log
+          exit ${PIPESTATUS[0]}
 
       - name: Stage release artifacts
         run: |
@@ -103,3 +104,25 @@ jobs:
             gh release create "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --title "AZYRON CLIENT 1.0 — Minecraft 1.21.11" --notes "$NOTES"
           fi
           gh release view "$TAG" --json assets --jq '.assets[].name'
+
+      - name: Report any failure as commit comment
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request
+          parts = []
+          for p in ('/tmp/gradle-build.log', '/tmp/modpack.log'):
+              if os.path.exists(p):
+                  log = open(p).read()
+                  lines = [l for l in log.splitlines() if any(k in l.lower() for k in ('error', 'failure', 'caused by', 'went wrong', 'exception', 'traceback', 'RuntimeError'.lower()))]
+                  parts.append('\n'.join(lines[-40:]) or log[-2000:])
+          body = '**AZYRON build failed:**\n```\n' + ('\n---\n'.join(parts) or 'see job log') + '\n```'
+          sha = os.environ['GITHUB_SHA']
+          req = urllib.request.Request(
+              f'https://api.github.com/repos/{os.environ["GITHUB_REPOSITORY"]}/commits/{sha}/comments',
+              data=json.dumps({'body': body[-60000:]}).encode(),
+              headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json'})
+          urllib.request.urlopen(req)
+          EOF
