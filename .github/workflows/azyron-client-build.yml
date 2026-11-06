@@ -87,23 +87,20 @@ jobs:
           cp azyron-client/modpack/Azyron-Client-Modpack-1.0.zip .
           ls -la Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip
 
-      - name: Publish GitHub release with downloadable files
+      - name: Update PRIVATE draft release (never public without developer approval)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG=azyron-client-1.0
-          NOTES='AZYRON CLIENT 1.0 for Minecraft Java 1.21.11 (Fabric).
-
-          • Azyron-Client-1.0.jar — drop into the mods folder of a Fabric 1.21.11 instance.
-          • Azyron-Client-Modpack-1.0.zip — installation-ready modpack with AZYRON CLIENT + Sodium, Lithium, FerriteCore, ImmediatelyFast, Entity Culling, More Culling, ModernFix, Dynamic FPS and Fabric API, all verified for 1.21.11.
-
-          Developer: JIGNESH GAMING. PojavLauncher compatible.'
+          NOTES='AZYRON CLIENT 1.0 — private development build (MC 1.21.11 Fabric).
+          DRAFT ONLY — not for public distribution. Release control: JIGNESH GAMING.'
           if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --draft --title "AZYRON CLIENT 1.0 (PRIVATE DRAFT) — Minecraft 1.21.11" --notes "$NOTES"
             gh release upload "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --clobber
           else
-            gh release create "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --title "AZYRON CLIENT 1.0 — Minecraft 1.21.11" --notes "$NOTES"
+            gh release create "$TAG" Azyron-Client-1.0.jar Azyron-Client-Modpack-1.0.zip --draft --title "AZYRON CLIENT 1.0 (PRIVATE DRAFT) — Minecraft 1.21.11" --notes "$NOTES"
           fi
-          gh release view "$TAG" --json assets --jq '.assets[].name'
+          gh release view "$TAG" --json isDraft --jq '.isDraft'
 
       - name: Report any failure as commit comment
         if: failure()
