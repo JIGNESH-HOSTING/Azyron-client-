@@ -23,7 +23,7 @@ MODS = {
     "lithium": "Lithium — server/game logic optimization",
     "ferritecore": "FerriteCore — memory usage reduction",
     "immediatelyfast": "ImmediatelyFast — UI/render batching",
-    "entity-culling": "Entity Culling — skips hidden entities",
+    "entityculling": "Entity Culling — skips hidden entities",
     "morecull": "More Culling — extra culling heuristics",
     "modernfix": "ModernFix — general fixes & optimizations",
     "dynamic-fps": "Dynamic FPS — lowers FPS when idle",
@@ -59,8 +59,21 @@ def fetch_versions(slug):
         f"https://api.modrinth.com/v2/project/{slug}/version"
         f"?loaders={urllib.request.quote(LOADERS)}&game_versions={urllib.request.quote(GAME_VERSIONS)}"
     )
-    with urllib.request.urlopen(url, timeout=30) as r:
-        return json.load(r)
+    print(f"Querying Modrinth for '{slug}' ...")
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            # fall back to the search endpoint in case the slug differs
+            search = f"https://api.modrinth.com/v2/search?query={urllib.request.quote(slug)}&limit=5"
+            with urllib.request.urlopen(search, timeout=30) as r:
+                hits = json.load(r).get("hits", [])
+            for hit in hits:
+                if slug.replace("-", "") in hit["slug"].replace("-", "") or slug.replace("-", "") in hit["project_id"]:
+                    print(f"Retrying with slug '{hit['slug']}'")
+                    return fetch_versions(hit["slug"])
+        raise
 
 
 def pick_file(slug):
